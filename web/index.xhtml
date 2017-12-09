@@ -4,8 +4,36 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-   <f:view>
-      <h:outputLabel value="Hello, world"/>
-   </f:view>
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+   <h:head>
+       <title>Start Page</title>
+   </h:head>
+
+   <h:body>
+       <f:view>
+           <h:form>
+               <table>
+                   <tr>
+                       <td>
+                           <p class="marquee">
+                               Shapka of Esakov Kirill Igorevich, of the blood of Old Chelyaba.
+King of Uranus, and the First Spilled Lessons, Gentelman Regnant of the Eight Semesters, Khal of the Great City on the Neva, Breaker of Bugs, the Unexpelled, from group №P3200 (var №9970)
+                           </p>
+                       </td>
+                   </tr>
+                   <tr>
+                       <td align="right">
+                           <p:clock mode="server" pattern="HH:mm:ss dd-MM-yyyy" autoSync="true" syncInterval="7000" />
+                       </td>
+                   </tr>
+                   <tr>
+                       <td>
+                           <h:commandButton action="mainPage" value="Main Page" />
+                       </td>
+                   </tr>
+               </table>
+           </h:form>
+       </f:view>
+   </h:body>
 </html>
