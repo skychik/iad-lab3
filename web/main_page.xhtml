@@ -14,20 +14,38 @@
                 <table>
                     <tr>
                         <td><h:outputLabel value="X" for="xValue" /></td>
-                        <td><h:inputText id="xValue" value="#mainPage.xValue"/></td>
+                        <td><h:inputText id="xValue" value="#{mainPage.x}"/></td>
                         <td><h:message for="xValue"/></td>
                     </tr>
                     <tr>
                         <td><h:outputLabel value="Y" for="yValue" /></td>
-                        <td><h:inputText id="yValue" value="#mainPage.YValue"/></td>
+                        <td><h:inputText id="yValue" value="#{mainPage.y}"/></td>
                         <td><h:message for="yValue"/></td>
                     </tr>
                     <tr>
                         <td><h:outputLabel value="R" for="rValue" /></td>
-                        <td><h:inputText id="rValue" value="#mainPage.rValue"/></td>
+                        <td><h:inputText id="rValue" value="#{mainPage.r}"/></td>
                         <td><h:message for="rValue"/></td>
                     </tr>
                 </table>
+                <h:dataTable value="#{mainPage.points}" var="point">
+                    <h:column>
+                        <f:facet name="header">X</f:facet>
+                        #{point.x}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Y</f:facet>
+                        #{point.y}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">R</f:facet>
+                        #{point.r}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Is in range</f:facet>
+                        #{point.inRange}
+                    </h:column>
+                </h:dataTable>
             </h:form>
         </f:view>
     </body>

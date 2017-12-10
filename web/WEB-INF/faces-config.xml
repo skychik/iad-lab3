@@ -3,11 +3,27 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
     http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
-  
+
+    <managed-bean>
+        <managed-bean-name>startPage</managed-bean-name>
+        <managed-bean-class>beans.StartPageBean</managed-bean-class>
+        <managed-bean-scope>application</managed-bean-scope>
+    </managed-bean>
+
     <managed-bean>
         <managed-bean-name>mainPage</managed-bean-name>
         <managed-bean-class>beans.MainPageBean</managed-bean-class>
         <managed-bean-scope>application</managed-bean-scope>
     </managed-bean>
+    
+    <navigation-rule>
+        <from-view-id>/index.xhtml</from-view-id>
+
+        <navigation-case>
+            <from-action>#{startPage.processMainPage}</from-action>
+            <from-outcome>mainPage</from-outcome>
+            <to-view-id>/main_page.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
     
 </faces-config>
