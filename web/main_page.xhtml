@@ -14,110 +14,139 @@
     <h:body>
         <f:view>
             <h:form id="form">
-                <table>
+                <iframe id="header" src="${pageContext.request.contextPath}/iad-lab3_war/resources/html/marquee.html" scrolling="no"/>
+                <table id="main-table">
                     <tr>
-                        <td colspan="4">
-                            <div class="marquee">
-        Shapka of Esakov Kirill Igorevich, of the blood of Old Chelyaba. King of Uranus, and the First Spilled Lessons, Gentelman Regnant of the Eight Semesters, Khal of the Great City on the Neva, Breaker of Bugs, the Unexpelled, from group №P3200 (var №6845)
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><h:outputLabel value="X" for="xValue" /></td>
                         <td>
-                            <ace:sliderEntry id="xValue"
-                                             value="#{mainPage.x}"
-                                             valueChangeListener="#{mainPage.setX}"
-                                             min="-3"
-                                             max="3"
-                                             showLabels="true"
-                                             stepPercent="8.3333">
-                                    <ace:ajax render="xOutput" event="slide" execute="xValue"/>
-                            </ace:sliderEntry>
-                            <h:outputText id="xOutput" value="#{mainPage.x}"/>
+                            <!--FORM TABLE.....................................................................-->
+                            <table id="form-table" border="1">
+                                <tr>
+                                    <td>
+                                        <h:outputLabel value="X" for="xValue" />
+                                    </td>
+                                    <td>
+                                        <ace:sliderEntry id="xValue"
+                                                         value="#{mainPage.getX()}"
+                                                         valueChangeListener="#{mainPage.setX}"
+                                                         min="-6"
+                                                         max="6"
+                                                         showLabels="false"
+                                                         stepPercent="8.3333">
+                                            <ace:ajax render="xOutput" event="slideEnd" execute="@this"/>
+                                        </ace:sliderEntry>
+                                    </td>
+                                    <td>
+                                        <h:outputText id="xOutput" value="#{mainPage.x}"/>
+                                    </td>
+                                    <td width="200">
+                                        <h:message id="xWarning"
+                                                   for="xValue"
+                                                   styleClass="message"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><h:outputLabel value="Y" for="yValue" /></td>
+                                    <td>
+                                        <h:inputText id="yValue"
+                                                     value="#{mainPage.y}"
+                                                     maxlength="5"
+                                                     label="Y">
+                                            <f:validateDoubleRange minimum="-5"
+                                                                   maximum="3"/>
+                                            <f:ajax render="yOutput" execute="yValue"/>
+                                        </h:inputText>
+                                    </td>
+                                    <td>
+                                        <h:outputText id="yOutput" value="#{mainPage.y}"/>
+                                    </td>
+                                    <td>
+                                        <h:message id="yWarning"
+                                                   for="yValue"
+                                                   styleClass="message" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><h:outputLabel value="R" for="rOutput"/></td>
+                                    <td>
+                                        <h:commandButton id="rValue1"
+                                                         value="1"
+                                                         action="#{mainPage.setR(1.0)}"
+                                                         onclick="reset_r_warning()">
+                                            <f:ajax render="rOutput" execute="rValue1"/>
+                                        </h:commandButton>
+                                        <h:commandButton id="rValue15"
+                                                         value="1.5"
+                                                         action="#{mainPage.setR(1.5)}"
+                                                         onclick="reset_r_warning()">
+                                            <f:ajax render="rOutput" execute="rValue15"/>
+                                        </h:commandButton>
+                                        <h:commandButton id="rValue2"
+                                                         value="2"
+                                                         action="#{mainPage.setR(2.0)}"
+                                                         onclick="reset_r_warning()">
+                                            <f:ajax render="rOutput" execute="rValue2"/>
+                                        </h:commandButton>
+                                        <h:commandButton id="rValue25"
+                                                         value="2.5"
+                                                         action="#{mainPage.setR(2.5)}"
+                                                         onclick="reset_r_warning()">
+                                            <f:ajax render="rOutput" execute="rValue25"/>
+                                        </h:commandButton>
+                                        <h:commandButton id="rValue3"
+                                                         value="3"
+                                                         action="#{mainPage.setR(3.0)}"
+                                                         onclick="reset_r_warning()">
+                                            <f:ajax render="rOutput" execute="rValue3"/>
+                                        </h:commandButton>
+                                    </td>
+                                    <td>
+                                        <h:outputText id="rOutput" value="#{mainPage.r}" />
+                                    </td>
+                                    <td>
+                                        <h:message id="rWarning"
+                                                   for="rOutput"
+                                                   styleClass="message" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <h:commandButton id="submit"
+                                                         value="Submit">
+                                            <ace:ajax execute="form:xValue form:yValue form:rValue"
+                                                      render="@form"
+                                                      onComplete="draw_point_on_submit(); return true;"/>
+                                            <f:actionListener binding="#{mainPage.submit()}" />
+                                        </h:commandButton>
+                                        <h:commandButton id="clear"
+                                                         value="Clear All">
+                                            <ace:ajax execute=""
+                                                      render="@form"
+                                                      onComplete="drawCanvasWithPoints(); return true;"/>
+                                            <f:actionListener binding="#{mainPage.clear()}" />
+                                        </h:commandButton>
+                                    </td>
+                                    <td>
+                                        <h:message for="submit"
+                                                   styleClass="message" />
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--/FORM TABLE.....................................................................-->
+                            <h:link id="startPage" outcome="index.jsf" value="Start Page" />
                         </td>
                         <td>
-                            <h:message id="xWarning"
-                                       for="xValue"
-                                       styleClass="message"/>
-                        </td>
-                        <td rowspan="3">
                             <canvas id="canvas" width="250" height="250" onclick="add_point_on_click(event)"/>
                         </td>
                     </tr>
                     <tr>
-                        <td><h:outputLabel value="Y" for="yValue" /></td>
-                        <td>
-                            <h:inputText id="yValue"
-                                         value="#{mainPage.y}">
-                                <f:validateDoubleRange minimum="-5"
-                                                       maximum="3"/>
-                                <f:ajax render="yOutput" execute="yValue"/>
-                            </h:inputText>
-                            <h:outputText id="yOutput" value="#{mainPage.y}"/>
-                        </td>
-                        <td>
-                            <h:message id="yWarning"
-                                       for="yValue"
-                                       styleClass="message"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><h:outputLabel value="R" for="rValue"/></td>
-                        <td>
-                            <h:commandButton id="rValue1"
-                                             value="1"
-                                             action="#{mainPage.setR(1.0)}">
-                                <f:ajax render="rValue" execute="rValue1"/>
-                            </h:commandButton>
-                            <h:commandButton id="rValue15"
-                                             value="1.5"
-                                             action="#{mainPage.setR(1.5)}">
-                                <f:ajax render="rValue" execute="rValue15"/>
-                            </h:commandButton>
-                            <h:commandButton id="rValue2"
-                                             value="2"
-                                             action="#{mainPage.setR(2.0)}">
-                                <f:ajax render="rValue" execute="rValue2"/>
-                            </h:commandButton>
-                            <h:commandButton id="rValue25"
-                                             value="2.5"
-                                             action="#{mainPage.setR(2.5)}">
-                                <f:ajax render="rValue" execute="rValue25"/>
-                            </h:commandButton>
-                            <h:commandButton id="rValue3"
-                                             value="3"
-                                             action="#{mainPage.setR(3.0)}">
-                                <f:ajax render="rValue" execute="rValue3"/>
-                            </h:commandButton>
-                            <h:outputText id="rValue" value="#{mainPage.r}" />
-                        </td>
-                        <td>
-                            <h:message id="rWarning"
-                                       for="rValue"
-                                       styleClass="message"/>
-                        </td>
-                    </tr>
-                    <tr>
                         <td colspan="2">
-                            <h:commandButton id="submit"
-                                             value="Submit"
-                                             action="#{mainPage.submit}"
-                                             onclick="draw_point_on_submit()"/>
-                        </td>
-                        <td>
-                            <h:message for="submit"
-                                       styleClass="message"/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="4">
                             <h:dataTable id="pointTable"
                                          value="#{mainPage.points}"
                                          var="point"
                                          styleClass="pointTable"
                                          headerClass="pointTableHeader"
-                                         rowClasses="pointTableOddRow,pointTableEvenRow">
+                                         rowClasses="pointTableOddRow,pointTableEvenRow"
+                                         border="1">
                                 <h:column>
                                     <f:facet name="header">X</f:facet>
                                     #{point.x}
@@ -138,10 +167,20 @@
                         </td>
                     </tr>
                 </table>
-                <script type="text/javascript">
-                    addPoints();
-                </script>
             </h:form>
+            <h:form id="formHidden">
+                <h:inputHidden id="xHidden" value="#{mainPage.x}"/>
+                <h:inputHidden id="yHidden" value="#{mainPage.y}" />
+                <h:inputHidden id="rHidden" value="#{mainPage.r}" />
+                <h:commandButton id="submitHidden" style="display: none">
+                    <ace:ajax execute="xHidden yHidden rHidden"
+                              render=":pointTable" />
+                    <f:actionListener binding="#{mainPage.submit()}" />
+                </h:commandButton>
+            </h:form>
+            <script type="text/javascript">
+                drawCanvasWithPoints();
+            </script>
         </f:view>
     </h:body>
 </html>

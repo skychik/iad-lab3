@@ -27,8 +27,8 @@
         </navigation-case>
     </navigation-rule>
     
-    <validator>
-        <validator-id>yValidator</validator-id>
-        <validator-class>beans.YValidator</validator-class>
-    </validator>
+    <!--<validator>-->
+        <!--<validator-id>yValidator</validator-id>-->
+        <!--<validator-class>beans.YValidator</validator-class>-->
+    <!--</validator>-->
 </faces-config>

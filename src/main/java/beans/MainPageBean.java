@@ -6,7 +6,9 @@ import utils.Point;
 import javax.faces.event.ValueChangeEvent;
 import javax.faces.event.ValueChangeListener;
 import java.io.Serializable;
+import java.math.RoundingMode;
 import java.sql.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,12 +23,18 @@ public class MainPageBean implements Serializable {
 	private Logger log = Logger.getLogger(MainPageBean.class.getName());
 
 	public double getX() {
-		return x;
+		/*DecimalFormat df = new DecimalFormat("#.####");
+		df.setRoundingMode(RoundingMode.CEILING);*/
+		return /*Double.parseDouble(df.format(*/x/*))*/;
 	}
 
 	public void setX(ValueChangeEvent e) {
-		double newX = Double.parseDouble(e.getNewValue().toString());
-		this.x = ((double) Math.round(newX * 2)) / 2;
+		double newX = Double.parseDouble(e.getNewValue().toString()); // TODO: SHOULDNT BE THERE
+		this.x = ((double) Math.round(newX * 2)) / 2 /**/ / 2;
+	}
+
+	public void setX(double x) {
+		this.x = x;
 	}
 
 	public double getY() {
@@ -58,7 +66,7 @@ public class MainPageBean implements Serializable {
 			while(rs.next()) {
 				Point point = new Point();
 				point.setX(rs.getDouble("x"));
-				point.setY(rs.getDouble("y"));
+				point.setY(((double) (Math.round(rs.getDouble("y")*100000)))/100000);
 				point.setR(rs.getDouble("r"));
 				point.setInRange(rs.getBoolean("in_range"));
 				points.add(point);
@@ -108,6 +116,17 @@ public class MainPageBean implements Serializable {
 		}
 	}
 
+	public void clear() {
+		log.log(Level.INFO, "---------clear all-------------");
+		String stm = "DELETE FROM public.points;";
+		try {
+			PreparedStatement pstm = connection.prepareStatement(stm);
+			pstm.execute();
+		} catch (SQLException e) {
+			log.log(Level.SEVERE, "Can't make and execute prepared statement: ", e);
+		}
+	}
+
 	private boolean checkPoint(double x, double y, double r) {
 		if (x > 0) {
 			if (y > 0) { // 1 quarter
@@ -117,10 +136,11 @@ public class MainPageBean implements Serializable {
 			}
 		} else {
 			if (y > 0) { // 2 quarter
-				return ((-x)/2 + y/2) <= r;
+				return ((-x) + y) <= r/2;
 			} else { // 3 quarter
 				return ((-x)/2 <= r) && ((-y) <= r);
 			}
 		}
 	}
+
 }

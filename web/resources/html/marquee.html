@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Marquee</title>
+    <style type="text/css">
+        .marquee {
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            margin: 0;
+            white-space:nowrap;
+            font-size:150%;
+            line-height:1.3em;
+
+
+            /* Starting position */
+            -moz-transform:translateX(100%);
+            -webkit-transform:translateX(100%);
+            transform:translateX(100%);
+            /* Apply animation to this element */
+            -moz-animation: scroll-left 15s linear infinite;
+            -webkit-animation: scroll-left 15s linear infinite;
+            animation: scroll-left 15s linear infinite;
+        }
+        /* Move it (define the animation) */
+        @-moz-keyframes scroll-left {
+            0%   {
+                -moz-transform: translate(100%, 0);
+                transform: translate(100%, 0);
+            }
+            100% {
+                -moz-transform: translate(-200%, 0);
+                transform: translate(-200%, 0)
+            }
+        }
+        @-webkit-keyframes scroll-left {
+            0%   {
+                -moz-transform: translate(100%, 0);
+                transform: translate(100%, 0);
+            }
+            100% {
+                -moz-transform: translate(-200%, 0);
+                transform: translate(-200%, 0)
+            }
+        }
+        @keyframes scroll-left {
+            0%   {
+                transform: translate(100%, 0);
+            }
+            100% {
+                transform: translate(-200%, 0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <p class="marquee">
+Shapka of Esakov Kirill Igorevich, of the blood of Old Chelyaba. King of Uranus, and the First Spilled Lessons, Gentelman Regnant of the Eight Semesters, Khal of the Great City on the Neva, Breaker of Bugs, the Unexpelled, from group №P3200 (var №9970)
+    </p>
+</body>
+</html>

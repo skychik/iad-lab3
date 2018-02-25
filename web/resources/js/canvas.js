@@ -1,6 +1,8 @@
 var canvasId = "canvas";
 var tableId = "form:pointTable";
 
+// --------------------------drawing--------------------------
+
 function drawCanvas() {
     var canvas = document.getElementById(canvasId);
     if (canvas && canvas.getContext) {
@@ -86,7 +88,7 @@ function drawCanvas() {
     }
 }
 
-function addPoints() {
+function drawCanvasWithPoints() {
     drawCanvas();
 
     var table = document.getElementById(tableId);
@@ -122,13 +124,16 @@ function drawPointByCoordinates(dot_x, dot_y, color) {
     context.fill();
 }
 
+// --------------------------functionality--------------------------
+
 function add_point_on_click(e) {
+    reset_r_warning();
+
     var canvas = document.getElementById("canvas");
-    var x = document.getElementById("form:xValue").value;
-    var y = document.getElementById("form:yValue").value;
-    var r = document.getElementById("form:rValue").value;
+    var r = document.getElementById("form:rOutput").innerHTML;
     if (canvas != null) {
-        if (isNumber(r)) {
+        //alert("r=" + r + ", is number=" + isNumber(r));
+        if (isNumber(r) && (r !== "0.0")) {
             var point = getMousePos(canvas, e);
             var color;
             if (in_range(point.x, point.y, r)) {
@@ -137,10 +142,13 @@ function add_point_on_click(e) {
                 color = "red";
             }
             drawPointByCoordinates(point.x, point.y, color);
-            document.getElementById("form:xValue").value = x;
-            document.getElementById("form:xValue").innerHTML = x;
-            document.getElementById("form:yValue").value = y;
-            document.getElementById("form:submit").click();
+            // document.getElementById("form:xOutput").value = point.x;
+            // ice.ace.instance('form:xValue').setValue("" + (point.x - 125) / 100 * r);
+            document.getElementById("formHidden:xHidden").value = (point.x - 125) / 100 * r;
+            document.getElementById("formHidden:yHidden").value = (125 - point.y) / 100 * r;
+            document.getElementById("formHidden:rHidden").value = r;
+            //alert("clicking hidden button");
+            document.getElementById("formHidden:submitHidden").click();
         } else {
             document.getElementById("form:rWarning").innerHTML = "*Set the \"R\" parameter";
         }
@@ -149,10 +157,14 @@ function add_point_on_click(e) {
 }
 
 function draw_point_on_submit() {
+    reset_r_warning();
+
     var canvas = document.getElementById("canvas");
-    var r = document.getElementById(tableId).value;
+    var x = document.getElementById("form:xOutput").innerHTML;
+    var y = document.getElementById("form:yOutput").innerHTML;
+    var r = document.getElementById("form:rOutput").innerHTML;
     if (canvas != null) {
-        if (isNumber(x) && isNumber(y) && isNumber(r)) {
+        if (isNumber(x) && isNumber(y) && isNumber(r) && (r !== "0.0")) {
             var color;
             if (in_range(x, y, r)) {
                 color = "green";
@@ -167,6 +179,8 @@ function draw_point_on_submit() {
         alert("Canvas is null");
 }
 
+//--------------------------helping functions--------------------------
+
 function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
     return {
@@ -176,7 +190,7 @@ function getMousePos(canvas, evt) {
 }
 
 function isNumber(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+    return !isNaN(parseFloat(n)) && isFinite(parseFloat(n));
 }
 
 function in_range(x, y, r) {
@@ -188,9 +202,13 @@ function in_range(x, y, r) {
         }
     } else {
         if (y > 0) { // 2 quarter
-            return ((-x)/2 + y/2) <= r;
+            return ((-x) + y) <= r/2;
         } else { // 3 quarter
             return ((-x)/2 <= r) && ((-y) <= r);
         }
     }
+}
+
+function reset_r_warning() {
+    document.getElementById("form:rWarning").innerHTML = "";
 }
